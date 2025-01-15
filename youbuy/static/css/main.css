@@ -1,0 +1,22 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ECF0F5;
+    color: #101114;
+    font-family: 'Poppins', sans-serif;
+}
+ .col-md-4 a {
+     text-decoration: none;
+     color: inherit;
+ }
+
+
+ .social-icons {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .social-icons i {
+    margin: 0 12px;
+  }
