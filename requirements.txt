@@ -1,6 +1,7 @@
 setuptools
 asgiref==3.8.1
 Django>=5.1.4
+python-dotenv
 mysqlclient==2.2.6
 pillow==10.4.0
 sqlparse==0.5.3
