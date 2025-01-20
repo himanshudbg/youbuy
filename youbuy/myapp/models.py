@@ -15,3 +15,12 @@ class Cart(models.Model):
     pid=models.ForeignKey(Product, on_delete=models.CASCADE, db_column='pid')
     qty=models.IntegerField(default=1)
 
+class Address(models.Model):
+    user_id=models.ForeignKey("auth.User",on_delete=models.CASCADE, db_column="user_id")
+    address=models.CharField(max_length=200)
+    fullname=models.CharField(max_length=40)
+    city=models.CharField(max_length=30)
+    pincode=models.CharField(max_length=10)
+    state=models.CharField(max_length=30)
+    mobile=models.CharField(max_length=10)
+

@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Product, Cart
+from .models import Product, Cart, Address
 from django.db.models import Q
+import re
 
 # Create your views here.
 
@@ -169,6 +170,27 @@ def updateqty(request, x, cid):
     cart.update(qty=quantity)
     return redirect('/mycart')
     
+def checkaddress(request):
+    context={}
+    user=User.objects.filter(id=request.user.id)
+    address=Address.objects.filter(user_id=user[0])
+    if len(address)>=1:
+        return redirect('/placeorder')
+    elif request.method=="POST":
+        fn=request.POST['full_name']
+        ad=request.POST['address']
+        ct=request.POST['city']
+        st=request.POST['state']
+        z=request.POST['zipcode']
+        mob=request.POST['mobile']
+        if re.match("[6-9]\d{9}", mob):
+            addr=Address.objects.create(user_id=user[0], fullname=fn, address=ad, city=ct, state=st, pincode=z, mobile=mob)
+            addr.save()
+            return redirect('/placeorder')
+        else:
+            context['error_msg']="Invalid Mobile Number!"
+            return render(request, 'address.html', context)
+    return render(request, 'address.html')
 
 
 

@@ -41,6 +41,7 @@ urlpatterns = [
     path('mycart/', views.viewcart),
     path('removecart/<cid>', views.removecart),
     path('updateqty/<x>/<cid>', views.updateqty),
+    path('checkaddress/', views.checkaddress),
 
 ]
 
