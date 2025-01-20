@@ -1,3 +1,4 @@
 {
-    "CodeGPT.apiKey": "OpenAI"
+    "CodeGPT.apiKey": "OpenAI",
+    "python.createEnvironment.contentButton": "show"
 }

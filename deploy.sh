@@ -2,7 +2,7 @@
 
    # Activate the virtual environment
    source venv/bin/activate  # On Windows: venv\Scripts\activate
-
+   
    # Apply migrations
    python manage.py migrate
 
