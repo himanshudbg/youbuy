@@ -1,4 +1,4 @@
-# YouBuy E-commerce Platform
+# YouBuy: E-commerce Platform
 
 YouBuy is a modern e-commerce platform built with Django, designed to provide a seamless shopping experience with features like product filtering, cart management, and secure checkout.
 
