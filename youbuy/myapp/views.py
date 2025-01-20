@@ -25,7 +25,7 @@ def viewcart(request):
     total_amount=0
     items=0
     for i in carts:
-        total_amount+=i.pid.price
+        total_amount+=i.pid.price*i.qty
         items+=i.qty
     context['total']=total_amount
     context['items']=items
@@ -152,6 +152,23 @@ def addtocart(request, pid):
     else:
         context['error_msg']="Please login first!"
         return render(request,'product_details.html', context)
+    
+
+def removecart(request, cid):
+    cart=Cart.objects.filter(id=cid)
+    cart.delete()
+    return redirect('/mycart')
+
+def updateqty(request, x, cid):
+    cart=Cart.objects.filter(id=cid)
+    quantity=cart[0].qty
+    if x=='1':
+        quantity+=1
+    elif quantity>1:
+        quantity-=1
+    cart.update(qty=quantity)
+    return redirect('/mycart')
+    
 
 
 

@@ -2,59 +2,56 @@
 {% load static %}
 {% block main %}
 
-<div class="row" style="margin: 10px;">
-    <div class="col-md-8 mx-auto">
-        <h3>Product Details</h3>
-        <div class="row">
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-12">
+            <h3 class="mb-4">Product Details</h3>
+
             {% if error_msg %}
             <div class="alert alert-danger">
-            {{error_msg}}
+                {{ error_msg }}
             </div>
             {% endif %}
 
             {% if success_msg %}
             <div class="alert alert-success">
-            {{success_msg}}
+                {{ success_msg }}
             </div>
             {% endif %}
-            
+
             {% for i in product %}
-            <div class="col-md-6">
-                <img src="{{i.pimage.url}}" class="card-img-top mt-2" alt="Product">
-            </div>
-            {{endif}}
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <img src="{{ i.pimage.url }}" class="img-fluid" alt="Product">
+                </div>
 
-            <div class="col-md-6">
-                <h3>Description</h3>
-                <br>
-                <p>
-                <h4>
-                    {{i.pname}} <br><br>
-                    ₹{{i.price}} <br><br>
-                    {{i.description}} <br><br>
+                <div class="col-md-4">
+                    <h4>{{ i.pname }}</h4>
+                    <p>{{ i.description }}</p>
+
                     {% if i.category == 1 %}
-                    <p class="card-text">Shoes</p>
+                    <p class="text-muted">Category: Shoes</p>
                     {% elif i.category == 2 %}
-                    <p class="card-text">Mobile</p>
+                    <p class="text-muted">Category: Mobile</p>
                     {% elif i.category == 3 %}
-                    <p class="card-text">Clothes</p>
+                    <p class="text-muted">Category: Clothes</p>
                     {% elif i.category == 4 %}
-                    <p class="card-text">Watches</p>
+                    <p class="text-muted">Category: Watches</p>
                     {% endif %}
-                </h4>
-                </p>
-                <br>
-            <p clas="card-text" > {{i.description}}</p>
-            <a href="/addtocart/{{i.id}}" class="anchor"><button class="btn btn-outline-warning detailbuttons" id="detailbuttons"> Add to Cart </a>
-            <a href="/mycart" class="anchor"><button class="btn btn-outline-warning detailbuttons" id="detailbuttons"> View Cart </a>
-            <a href="/" class="anchor"><button class="btn btn-warning detailbuttons" id="detailbuttons"> Shop More </a>
+                </div>
+
+                <div class="col-md-4">
+                    <p class="text-muted">Price: ₹{{ i.price }}</p>
+                    <div class="mt-4">
+                        <a href="/addtocart/{{ i.id }}" class="btn btn-warning btn-sm mr-2">Add to Cart</a> <br>
+                        <a href="/" class="btn btn-warning btn-sm">Shop More</a>
+                    </div>
+                </div>
             </div>
+            {% endfor %}
+
         </div>
-        {% endfor %}
-
     </div>
-
 </div>
-
 
 {% endblock main %}
