@@ -74,25 +74,16 @@ WSGI_APPLICATION = 'youbuy.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-import os
-from dotenv import load_dotenv
-
-# Load environment variables from .env file
-
-load_dotenv()
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('DATABASE_NAME'),
-        'USER': os.environ.get('DATABASE_USER'),
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
-        'PORT': os.environ.get('DATABASE_PORT', '3306'),
-        'OPTIONS': {
-            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-        },
-    }
+       'default': {
+           'ENGINE': 'django.db.backends.mysql',
+           'NAME': 'freedb_youbuydb',
+           'USER': 'freedb_youbuy',
+           'PASSWORD': 'A&HrHnEA8Pn2Vq@',
+           'HOST': 'sql.freedb.tech',
+           'PORT': '3306',
+       }
 }
 
 
