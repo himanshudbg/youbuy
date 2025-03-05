@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Complete Your Payment</h3>
+                    <p>Amount to pay: ₹{{ amount|divisibleby:100 }}</p>
+                    <button id="rzp-button" class="btn btn-primary">Pay Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+var options = {
+    "key": "{{ key }}", 
+    "amount": "{{ amount }}", 
+    "currency": "INR",
+    "name": "YouBuy",
+    "description": "Purchase Payment",
+    "order_id": "{{ order_id }}",
+    "handler": function (response){
+        document.getElementById('razorpay-payment-form').submit();
+    },
+    "prefill": {
+        "name": "{{ request.user.username }}",
+        "email": "{{ request.user.email }}"
+    },
+    "theme": {
+        "color": "#F37254"
+    }
+};
+var rzp = new Razorpay(options);
+document.getElementById('rzp-button').onclick = function(e){
+    rzp.open();
+    e.preventDefault();
+}
+</script>
+
+<form id="razorpay-payment-form" action="/payment/callback/" method="POST" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="razorpay_payment_id" id="razorpay_payment_id">
+    <input type="hidden" name="razorpay_order_id" id="razorpay_order_id">
+    <input type="hidden" name="razorpay_signature" id="razorpay_signature">
+</form>
+{% endblock %}

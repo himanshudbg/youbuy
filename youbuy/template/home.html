@@ -58,9 +58,11 @@
     {% if products %}
       {% for product in products %}
         <div class="col-md-3 mb-4">
-          <div class="card mx-auto" style="width: 20rem; height: 385px; overflow: hidden; border-color: white; box-shadow: #000000;">
-            <img src="{{product.pimage.url}}" class="card-img-top" alt="" style="height: 200px; object-fit: contain;">
-            <div class="card-body">
+          <div class="card mx-auto" style="width: 20rem; height: 385px; overflow: hidden; border-color: white; box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;">
+            <div style="height: 180px; padding: 10px; display: flex; align-items: center; justify-content: center; background-color: #fff;">
+              <img src="{{product.pimage.url}}" class="card-img-top" alt="" style="max-height: 140px; max-width: 140px; object-fit: contain;">
+            </div>
+            <div class="card-body" style="padding: 15px;">
               <h5 class="card-title" style="font-size: 18px; line-height: 1.7; white-space: nowrap; overflow: hidden;">{{product.pname}}</h5>
               <p class="card-text" style="font-size: 14px; line-height: 1.2;"><b>₹{{product.price}}</b></p>
               {% if product.category == 1 %}

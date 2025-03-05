@@ -20,8 +20,6 @@ from django.conf.urls.static import static
 from django.conf import settings
 from myapp import views
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
@@ -40,7 +38,9 @@ urlpatterns = [
     path('removecart/<cid>', views.removecart),
     path('updateqty/<x>/<cid>', views.updateqty),
     path('checkaddress/', views.checkaddress),
-
+    
+    path('payment/initiate/', views.initiate_payment, name='initiate_payment'), 
+    path('payment/callback/', views.payment_callback, name='payment_callback'),
 ]
 
-urlpatterns+=static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

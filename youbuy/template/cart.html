@@ -2,48 +2,90 @@
 {% load static %}
 {% block main %}
 
-<div class="row m-2">
-
-    <div class="col-md-9">
-
-        <h3>Shipping cart</h3>
-        <div class="row mx-auto">
-            {% for cart in carts %}
-            <div class="col-md-5">
-                <img src="{{cart.pid.pimage.url}}" class="card-img-top" alt="...">
-            </div>
-            <div class="col-md-5">
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0">Shopping Cart ({{items}} items)</h4>
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">{{cart.pid.pname}}</h5>
-                    <h5 class="card-title"> <strong>₹{{cart.pid.price}}</strong></h5>
-                   
-                    <p><label for="">Quantity:</label>
-                    <a href="/updateqty/0/{{cart.id}}"><button class="btn btn-danger">-</button></a>
-
-                        
-                     <input type="text" value="{{cart.qty}}">
-                     <a href="/updateqty/1/{{cart.id}}"><button class="btn btn-danger">+</button></a>
-                    </p>
-                    <p><a href="/removecart/{{cart.id}}"> <button class="btn btn-danger"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
-                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5M11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47M8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5"/>
-                      </svg>&nbsp;    Remove 
-
-                    </button></a></p>
-                   
-           
- 
+                    {% if carts %}
+                        {% for cart in carts %}
+                        <div class="row mb-4 align-items-center">
+                            <div class="col-md-3">
+                                <div style="height: 120px; display: flex; align-items: center; justify-content: center; background-color: #fff;">
+                                    <img src="{{cart.pid.pimage.url}}" class="img-fluid" alt="Product" style="max-height: 100px; object-fit: contain;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5 class="product-title" style="font-size: 16px; margin-bottom: 8px;">{{cart.pid.pname}}</h5>
+                                <p class="text-success mb-2" style="font-size: 14px;">In Stock</p>
+                                <div class="d-flex align-items-center mb-2">
+                                    <div class="quantity-controls d-flex align-items-center">
+                                        <a href="/updateqty/0/{{cart.id}}" class="btn btn-outline-secondary btn-sm" style="width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center;">-</a>
+                                        <input type="text" value="{{cart.qty}}" class="form-control mx-2" style="width: 50px; text-align: center;" readonly>
+                                        <a href="/updateqty/1/{{cart.id}}" class="btn btn-outline-secondary btn-sm" style="width: 30px; height: 30px; padding: 0; display: flex; align-items: center; justify-content: center;">+</a>
+                                    </div>
+                                    <div class="mx-3">|</div>
+                                    <a href="/removecart/{{cart.id}}" class="text-danger text-decoration-none" style="font-size: 14px;">
+                                        <i class="bi bi-trash3"></i> Remove
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-3 text-end">
+                                <h5 class="mb-0" style="font-size: 18px;">₹{{cart.pid.price}}</h5>
+                            </div>
+                        </div>
+                        {% if not forloop.last %}
+                            <hr class="my-3">
+                        {% endif %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-center py-4">
+                            <i class="bi bi-cart3" style="font-size: 48px;"></i>
+                            <h5 class="mt-3">Your cart is empty</h5>
+                            <a href="/" class="btn btn-warning mt-3">Continue Shopping</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
-            {% endfor %}
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="shadow-lg p-3 mb-5 bg-body rounded">
-            <p> Subtotal ({{items}} items): <b>₹{{total}}</b> </p>
-            <a href="/checkaddress"><button class="btn btn-warning">Continue</button></a>
         </div>
 
-
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Order Summary</h5>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Items ({{items}}):</span>
+                        <span>₹{{total}}</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span>Delivery:</span>
+                        <span class="text-success">Free</span>
+                    </div>
+                    <hr>
+                    <div class="d-flex justify-content-between mb-4">
+                        <h5 class="mb-0">Total:</h5>
+                        <h5 class="mb-0">₹{{total}}</h5>
+                    </div>
+                    
+                    <form action="{% url 'initiate_payment' %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-warning w-100" style="background-color: #fbd200; border-color: #fbd200; color: #000000;">
+                            Proceed to Payment
+                        </button>
+                    </form>
+                    
+                    <div class="mt-3 text-center">
+                        <a href="/" class="text-decoration-none" style="color: #0066c0; font-size: 14px;">
+                            Continue Shopping
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 {% endblock main %}

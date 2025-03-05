@@ -24,3 +24,12 @@ class Address(models.Model):
     state=models.CharField(max_length=30)
     mobile=models.CharField(max_length=10)
 
+# Add after existing models
+class Order(models.Model):
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=100, unique=True)
+    total_amount = models.FloatField()
+    payment_id = models.CharField(max_length=100, blank=True)
+    payment_status = models.CharField(max_length=20, default='PENDING')
+    created_at = models.DateTimeField(auto_now_add=True)
+

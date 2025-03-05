@@ -5,6 +5,10 @@ from django.contrib.auth import authenticate, login, logout
 from .models import Product, Cart, Address
 from django.db.models import Q
 import re
+import razorpay
+from django.conf import settings
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 
@@ -191,6 +195,75 @@ def checkaddress(request):
             context['error_msg']="Invalid Mobile Number!"
             return render(request, 'address.html', context)
     return render(request, 'address.html')
+
+# Add these new view functions
+def initiate_payment(request):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    
+    client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+    
+    if 'buy_now' in request.POST:
+        # Handle instant buy
+        product_id = request.POST.get('product_id')
+        product = Product.objects.get(id=product_id)
+        amount = int(product.price * 100)  # Convert to paise
+    else:
+        # Handle cart checkout
+        cart_items = Cart.objects.filter(userid=request.user.id)
+        amount = sum(item.pid.price * item.qty for item in cart_items)
+        amount = int(amount * 100)  # Convert to paise
+
+    # Create Razorpay Order
+    payment = client.order.create({
+        'amount': amount,
+        'currency': 'INR',
+        'payment_capture': '1'
+    })
+
+    order = Order.objects.create(
+        user=request.user,
+        order_id=payment['id'],
+        total_amount=amount/100
+    )
+
+    context = {
+        'order_id': payment['id'],
+        'amount': amount,
+        'key': settings.RAZORPAY_KEY_ID,
+    }
+    return render(request, 'payment.html', context)
+
+@csrf_exempt
+def payment_callback(request):
+    if request.method == "POST":
+        payment_id = request.POST.get('razorpay_payment_id', '')
+        order_id = request.POST.get('razorpay_order_id', '')
+        signature = request.POST.get('razorpay_signature', '')
+
+        client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+        try:
+            client.utility.verify_payment_signature({
+                'razorpay_order_id': order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            })
+            
+            # Update order status
+            order = Order.objects.get(order_id=order_id)
+            order.payment_id = payment_id
+            order.payment_status = 'SUCCESS'
+            order.save()
+
+            # Clear cart after successful payment
+            Cart.objects.filter(userid=request.user.id).delete()
+            
+            return redirect('/payment-success')
+        except:
+            return redirect('/payment-failed')
+
+    return redirect('/payment-failed')
 
 
 
