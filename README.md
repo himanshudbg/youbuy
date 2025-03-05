@@ -44,7 +44,7 @@ YouBuy is a modern e-commerce platform built with Django, designed to provide a 
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/yourusername/youbuy.git
+   git clone https://github.com/himanshudbg/youbuy.git
    cd youbuy
    ```
 
