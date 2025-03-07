@@ -118,7 +118,7 @@ YouBuy is a modern e-commerce platform built with Django, designed to provide a 
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## Acknowledgments
 
