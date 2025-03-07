@@ -10,3 +10,6 @@ python manage.py collectstatic --no-input
 
 # Run migrations
 python manage.py migrate
+
+# Create superuser
+python manage.py createsuperuser --noinput --username $DJANGO_SUPERUSER_USERNAME --email $DJANGO_SUPERUSER_EMAIL
