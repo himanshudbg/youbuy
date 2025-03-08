@@ -12,9 +12,6 @@ import json
 
 # Create your views here.
 
-def itvedant(request):
-    return render(request,'itvedant.html')
-
 def base(request):
     return render(request,'base.html')
 
