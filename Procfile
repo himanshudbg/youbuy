@@ -1,1 +1,1 @@
-web: gunicorn youbuy.wsgi:application --bind 0.0.0.0:$PORT
+web: cd youbuy && gunicorn youbuy.wsgi:application --bind 0.0.0.0:$PORT
