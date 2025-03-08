@@ -1,5 +1,0 @@
-django==5.1.*
-mysqlclient
-pillow
-python-dotenv
-razorpay
