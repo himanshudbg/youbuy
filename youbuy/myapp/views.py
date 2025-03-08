@@ -184,7 +184,7 @@ def checkaddress(request):
         st=request.POST['state']
         z=request.POST['zipcode']
         mob=request.POST['mobile']
-        if re.match("[6-9]\d{9}", mob):
+        if re.match(r"[6-9]\d{9}", mob):
             addr=Address.objects.create(user_id=user[0], fullname=fn, address=ad, city=ct, state=st, pincode=z, mobile=mob)
             addr.save()
             return redirect('/placeorder')
