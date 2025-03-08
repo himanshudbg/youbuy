@@ -32,4 +32,3 @@ class Order(models.Model):
     payment_id = models.CharField(max_length=100, blank=True)
     payment_status = models.CharField(max_length=20, default='PENDING')
     created_at = models.DateTimeField(auto_now_add=True)
-

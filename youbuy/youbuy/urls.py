@@ -16,31 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from django.conf.urls.static import static
-from django.conf import settings
-from myapp import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home),
-    path('base/', views.base),
-    path('about/', views.about),
-    path('contact/', views.contact),
-    path('register/', views.uregister),
-    path('login/', views.ulogin),
-    path('logout/', views.ulogout),
-    path('product_details/<pid>/', views.product_details),
-    path('filterbycategory/<cat>/', views.filterbycategory),
-    path('sortbyprice/<p>', views.sortbyprice),
-    path('filterbyprice/', views.filterbyprice),
-    path('addtocart/<pid>/', views.addtocart),
-    path('mycart/', views.viewcart),
-    path('removecart/<cid>', views.removecart),
-    path('updateqty/<x>/<cid>', views.updateqty),
-    path('checkaddress/', views.checkaddress),
-    
-    path('payment/initiate/', views.initiate_payment, name='initiate_payment'), 
-    path('payment/callback/', views.payment_callback, name='payment_callback'),
 ]
-
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

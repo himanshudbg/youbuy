@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-body">
                     <h3 class="card-title">Complete Your Payment</h3>
-                    <p>Amount to pay: ₹{{ amount|divisibleby:100 }}</p>
+                    <p>Amount to pay: ₹{{ amount|floatformat:2 }}</p>
                     <button id="rzp-button" class="btn btn-primary">Pay Now</button>
                 </div>
             </div>
@@ -18,12 +18,15 @@
 <script>
 var options = {
     "key": "{{ key }}", 
-    "amount": "{{ amount }}", 
+    "amount": "{{ razorpay_amount }}", 
     "currency": "INR",
     "name": "YouBuy",
     "description": "Purchase Payment",
     "order_id": "{{ order_id }}",
     "handler": function (response){
+        document.getElementById('razorpay_payment_id').value = response.razorpay_payment_id;
+        document.getElementById('razorpay_order_id').value = response.razorpay_order_id;
+        document.getElementById('razorpay_signature').value = response.razorpay_signature;
         document.getElementById('razorpay-payment-form').submit();
     },
     "prefill": {
@@ -34,6 +37,7 @@ var options = {
         "color": "#F37254"
     }
 };
+
 var rzp = new Razorpay(options);
 document.getElementById('rzp-button').onclick = function(e){
     rzp.open();

@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from .models import Product, Cart, Address
+from .models import Product, Cart, Address, Order
 from django.db.models import Q
 import re
 import razorpay
@@ -229,10 +229,17 @@ def initiate_payment(request):
 
     context = {
         'order_id': payment['id'],
-        'amount': amount,
+        'amount': amount/100, 
+        'razorpay_amount': amount, 
         'key': settings.RAZORPAY_KEY_ID,
     }
     return render(request, 'payment.html', context)
+
+def payment_success(request):
+    return render(request, 'payment_success.html')
+
+def payment_failed(request):
+    return render(request, 'payment_failed.html')
 
 @csrf_exempt
 def payment_callback(request):
@@ -244,26 +251,28 @@ def payment_callback(request):
         client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
         try:
-            client.utility.verify_payment_signature({
-                'razorpay_order_id': order_id,
+            # Verify the payment signature
+            params_dict = {
                 'razorpay_payment_id': payment_id,
+                'razorpay_order_id': order_id,
                 'razorpay_signature': signature
-            })
+            }
+            client.utility.verify_payment_signature(params_dict)
             
             # Update order status
             order = Order.objects.get(order_id=order_id)
             order.payment_id = payment_id
             order.payment_status = 'SUCCESS'
             order.save()
-
-            # Clear cart after successful payment
-            Cart.objects.filter(userid=request.user.id).delete()
             
-            return redirect('/payment-success')
-        except:
-            return redirect('/payment-failed')
-
-    return redirect('/payment-failed')
+            # Clear cart after successful payment
+            Cart.objects.filter(userid=request.user).delete()
+            
+            return redirect('/payment-success/')
+        except Exception as e:
+            print(f"Payment verification failed: {str(e)}")
+            return redirect('/payment-failed/')
+    return redirect('/payment-failed/')
 
 
 
