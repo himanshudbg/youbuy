@@ -4,3 +4,6 @@ db.sqlite3
 media/
 .env
 .DS_Store
+staticfiles/
+*.log
+local_settings.py
