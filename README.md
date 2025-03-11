@@ -4,7 +4,7 @@ YouBuy is a modern e-commerce platform built with Django, designed to provide a 
 
 🌐 **Live Demo:** [Visit YouBuy](https://modern-natalya-himanshu28-c3470a82.koyeb.app)
 
-![YouBuy E-commerce Platform](youbuy/static/images/image.png)
+![YouBuy E-commerce Platform](youbuy/static/images/youbuymockup.png)
 
 ## Table of Contents
 
